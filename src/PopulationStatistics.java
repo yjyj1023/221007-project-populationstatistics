@@ -70,18 +70,37 @@ public class PopulationStatistics {
         }
     }
 
+    //List<String>을 지정한 파일에 write
+    public void write(List<String> strs, String filename){
+        File file = new File(filename);
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+            for(String str:strs){
+                writer.write(str);
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public String fromToString(PopulationMove populationMove){
+        return populationMove.getToSido()+","+populationMove.getFromSido()+"\n";
+    }
     public static void main(String[] args) throws IOException {
         String fileArr = "C:\\Users\\lyj19\\git\\221007\\2021_인구관련연간자료_20220927_66125.csv";
 
         PopulationStatistics populationStatistics = new PopulationStatistics();
-//        List<PopulationMove> pml = populationStatistics.readByLine(fileArr);
-//
-//
-//        for(PopulationMove pm : pml){
-//            System.out.printf("전입: %s, 전출: %s\n", pm.getToSido(), pm.getFromSido() );
-//        }
+        List<PopulationMove> pml = populationStatistics.readByLine(fileArr);
 
-        populationStatistics.createAFile("./from_to.txt");
+        List<String> strings = new ArrayList<>();
+        for(PopulationMove pm : pml){
+            //System.out.printf("전입: %s, 전출: %s\n", pm.getToSido(), pm.getFromSido() );
+            String fromTo = populationStatistics.fromToString(pm);
+            strings.add(fromTo);
+        }
+        System.out.println(strings.size());
+        populationStatistics.write(strings,"./from_to.txt" );
+
 
 
     }
