@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -64,13 +61,28 @@ public class PopulationStatistics {
         return new PopulationMove(toSido,fromSido);
     }
 
+    public void createAFile(String filename){
+        File file = new File(filename);
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void main(String[] args) throws IOException {
         String fileArr = "C:\\Users\\lyj19\\git\\221007\\2021_인구관련연간자료_20220927_66125.csv";
 
         PopulationStatistics populationStatistics = new PopulationStatistics();
-        List<PopulationMove> pml = populationStatistics.readByLine(fileArr);
+//        List<PopulationMove> pml = populationStatistics.readByLine(fileArr);
+//
+//
+//        for(PopulationMove pm : pml){
+//            System.out.printf("전입: %s, 전출: %s\n", pm.getToSido(), pm.getFromSido() );
+//        }
 
-        System.out.println(pml.size());
+        populationStatistics.createAFile("./from_to.txt");
+
 
     }
 }
