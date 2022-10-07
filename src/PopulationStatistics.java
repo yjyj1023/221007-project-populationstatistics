@@ -90,7 +90,6 @@ public class PopulationStatistics {
     }
 
     public Map<String, Integer> getMoveCntMap(List<PopulationMove> pml){
-
         Map<String, Integer> moveCntMap = new HashMap<>();
         for (PopulationMove pm : pml){
             String key = pm.getFromSido() + "," + pm.getToSido();
@@ -102,6 +101,29 @@ public class PopulationStatistics {
         return moveCntMap;
     }
 
+    public Map<String, Integer> heatmapIdxMap(){
+        Map<String, Integer> map = new HashMap<>();
+        map.put("11", 0);
+        map.put("26", 1);
+        map.put("27", 2);
+        map.put("28", 3);
+        map.put("29", 4);
+        map.put("30", 5);
+        map.put("31", 6);
+        map.put("36", 7);
+        map.put("41", 8);
+        map.put("42", 9);
+        map.put("43", 10);
+        map.put("44", 11);
+        map.put("45", 12);
+        map.put("46", 13);
+        map.put("47", 14);
+        map.put("48", 15);
+        map.put("50", 16);
+
+        return map;
+    }
+
     public static void main(String[] args) throws IOException {
         String fileArr = "./from_to.txt";
 
@@ -110,20 +132,18 @@ public class PopulationStatistics {
 
         Map<String, Integer> map = ps.getMoveCntMap(pml);
 
-        String targetFilename = "./each_sido_cnt.txt";
+        String targetFilename = "./for_heatmap.txt";
         ps.createAFile(targetFilename);
+        Map<String, Integer> heatMapIdxMap = ps.heatmapIdxMap();
         List<String> cntResult = new ArrayList<>();
 
         for(String key:map.keySet()){
-            String s = String.format("key:%s value:%d\n", key,map.get(key));
+            String[] fromto = key.split(",");
+            //매핑 후 저장
+            String s = String.format("[%s, %s, %d],\n", heatMapIdxMap.get(fromto[0]),heatMapIdxMap.get(fromto[1]),map.get(key));
             cntResult.add(s);
-            //System.out.printf("key:%s value:%d\n", key,map.get(key));
         }
         ps.write(cntResult, targetFilename);
-//        for(PopulationMove pm : pml){
-//            System.out.printf("전입: %s, 전출: %s\n", pm.getToSido(), pm.getFromSido() );
-//
-//        }
 
     }
 }
