@@ -56,7 +56,7 @@ public class PopulationStatistics {
         int toSido =  Integer.parseInt(dataArr[0]);
 
         //전출 행정구역시도코드
-        int fromSido = Integer.parseInt(dataArr[6]);
+        int fromSido = Integer.parseInt(dataArr[1]);
 
         return new PopulationMove(toSido,fromSido);
     }
@@ -87,21 +87,15 @@ public class PopulationStatistics {
         return populationMove.getToSido()+","+populationMove.getFromSido()+"\n";
     }
     public static void main(String[] args) throws IOException {
-        String fileArr = "C:\\Users\\lyj19\\git\\221007\\2021_인구관련연간자료_20220927_66125.csv";
+        String fileArr = "./from_to.txt";
 
         PopulationStatistics populationStatistics = new PopulationStatistics();
         List<PopulationMove> pml = populationStatistics.readByLine(fileArr);
 
-        List<String> strings = new ArrayList<>();
         for(PopulationMove pm : pml){
-            //System.out.printf("전입: %s, 전출: %s\n", pm.getToSido(), pm.getFromSido() );
-            String fromTo = populationStatistics.fromToString(pm);
-            strings.add(fromTo);
+            System.out.printf("전입: %s, 전출: %s\n", pm.getToSido(), pm.getFromSido() );
+
         }
-        System.out.println(strings.size());
-        populationStatistics.write(strings,"./from_to.txt" );
-
-
 
     }
 }
