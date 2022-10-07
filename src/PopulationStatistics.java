@@ -52,12 +52,12 @@ public class PopulationStatistics {
     public PopulationMove pars(String data){
         String[] dataArr = data.split(",");
         //전입 행정구역시도코드
-        int toSido =  Integer.parseInt(dataArr[0]);
+        int fromSido =  Integer.parseInt(dataArr[0]);
 
         //전출 행정구역시도코드
-        int fromSido = Integer.parseInt(dataArr[6]);
+        int toSido = Integer.parseInt(dataArr[6]);
 
-        return new PopulationMove(toSido,fromSido);
+        return new PopulationMove(fromSido,toSido);
     }
 
     public static void main(String[] args) throws IOException {
