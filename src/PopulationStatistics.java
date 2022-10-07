@@ -3,7 +3,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PopulationStatistics {
     //기존에 FileReader로 작성했던 코드 메소드로 분리하기
@@ -86,16 +88,42 @@ public class PopulationStatistics {
     public String fromToString(PopulationMove populationMove){
         return populationMove.getToSido()+","+populationMove.getFromSido()+"\n";
     }
+
+    public Map<String, Integer> getMoveCntMap(List<PopulationMove> pml){
+
+        Map<String, Integer> moveCntMap = new HashMap<>();
+        for (PopulationMove pm : pml){
+            String key = pm.getFromSido() + "," + pm.getToSido();
+            if(moveCntMap.get(key) == null){
+                moveCntMap.put(key,1);
+            }
+            moveCntMap.put(key, moveCntMap.get(key)+1);
+        }
+        return moveCntMap;
+    }
+
     public static void main(String[] args) throws IOException {
         String fileArr = "./from_to.txt";
 
-        PopulationStatistics populationStatistics = new PopulationStatistics();
-        List<PopulationMove> pml = populationStatistics.readByLine(fileArr);
+        PopulationStatistics ps = new PopulationStatistics();
+        List<PopulationMove> pml = ps.readByLine(fileArr);
 
-        for(PopulationMove pm : pml){
-            System.out.printf("전입: %s, 전출: %s\n", pm.getToSido(), pm.getFromSido() );
+        Map<String, Integer> map = ps.getMoveCntMap(pml);
 
+        String targetFilename = "./each_sido_cnt.txt";
+        ps.createAFile(targetFilename);
+        List<String> cntResult = new ArrayList<>();
+
+        for(String key:map.keySet()){
+            String s = String.format("key:%s value:%d\n", key,map.get(key));
+            cntResult.add(s);
+            //System.out.printf("key:%s value:%d\n", key,map.get(key));
         }
+        ps.write(cntResult, targetFilename);
+//        for(PopulationMove pm : pml){
+//            System.out.printf("전입: %s, 전출: %s\n", pm.getToSido(), pm.getFromSido() );
+//
+//        }
 
     }
 }
